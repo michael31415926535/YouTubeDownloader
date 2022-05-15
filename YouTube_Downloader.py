@@ -1,12 +1,5 @@
-from __future__ import unicode_literals
-from asyncio.windows_events import NULL
-from tkinter.filedialog import askdirectory
-#import youtube_dl
 import yt_dlp as youtube_dl
-import os
-from sys import argv
-import time
-import shutil
+from os import path
 
 
 # Download config
@@ -37,10 +30,10 @@ def download(link, download_options):
 
 def main(options):
         urls = []
-        num = NULL
+        num = None
 
         # Get number of videos user wants to download
-        while num == NULL:
+        while num == None:
             try:
                 num = int(input("\n[?] How many videos are you going to download? >> "))
             except:
@@ -55,40 +48,40 @@ def main(options):
                     urls.append(url)
                 else:
                     if url != "":
-                        print("   [!] Invalid URL entered")
+                        print("  [!] Invalid URL entered")
 
         #check if valid songs have been input
         if not urls:
-            print("\n    [!] No URLs Specified!")
+            return print("\n    [!] No URLs Specified!")
 
         #checks to see if specified directory exists or not, if so, breaks
-        dir_choice = NULL
-        while dir_choice == NULL:
+        dir_choice = None
+        while dir_choice == None:
             print("\n[?] Enter location for downloads to be saved to:")
-            print("    [+] Enter '1' for Desktop")
+            print("    [+] Enter '1' for desktop")
             print("    [+] Enter '2' for custom folder")
             dir_choice = input(" >> ")
 
             if dir_choice == "2":
-                path = str(input("[+] Enter save path >> "))
-                if os.path.isfile(path):
+                folderPath = str(input("[+] Enter save path >> "))
+                if path.isfile(folderPath):
                     print("[!] Invalid path specified!")
                 else:
-                    if not os.path.exists(path):
+                    if not path.exists(folderPath):
                         try:
-                            os.path.create(path)
-                            print(f"    [+] Created path '{0}'", path)
-                            dir_choice = path
+                            path.create(folderPath)
+                            print(f"    [+] Created path '{0}'", folderPath)
+                            dir_choice = folderPath
                         except:
                             print("    [!] Failed to create path!")
                     else:
-                        dir_choice = path
+                        dir_choice = folderPath
             elif dir_choice == "1":
-                dir_choice = os.path.expanduser("~/Desktop/Downloads/")
+                dir_choice = path.expanduser("~/Desktop/Downloads/")
             else:
                 print("[!] Unknown input!")
-        
-        options["outtmpl"] = os.path.join(dir_choice, "%(title)s.%(ext)s")
+        input()
+        options["outtmpl"] = path.join(dir_choice, "%(title)s.%(ext)s")
 
         #Download confirmation  
         answer = input("\n[?] Start the download? (Yes/No) >> ")
