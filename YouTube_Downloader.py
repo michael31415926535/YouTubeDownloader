@@ -60,11 +60,6 @@ def main(options):
         #check if valid songs have been input
         if not urls:
             print("\n    [!] No URLs Specified!")
- 
-        # #Creates/Opens songs.txt and then adds urls
-        # with open("songs.txt", "w+") as txt:
-        #     for url in urls:
-        #         txt.write(url + "\n")
 
         #checks to see if specified directory exists or not, if so, breaks
         dir_choice = NULL
@@ -112,7 +107,7 @@ def main(options):
 
 if __name__ == "__main__":
     while True:
-        print("\n -+= Developed By EternalBlue#5154 =+-")
+        print("\n -+= Developed By EternalBlue#8132 =+-")
         print("[+] Type '1' to download YouTube Audio (MP3)")
         print("[+] Type '2' to download YouTube Videos (MP4)")
         p = str(input(" >> "))
@@ -121,7 +116,7 @@ if __name__ == "__main__":
             main(download_mp3)
         elif p == "2" or p.lower() == "mp4" or p.lower() == "video":
             main(download_mp4)
-        elif p.lower()[1] == "e" or p.lower()[1] == "q":
+        elif p.lower()[:1] == "e" or p.lower()[:1] == "q":
             exit()
         else:
-            print("\n[!] Invalid Choice! Type 'exit' or 'quit' to cancel.")
+            print("\n[!] Invalid choice! Type 'exit' or 'quit' to cancel.")
