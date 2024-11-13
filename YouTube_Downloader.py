@@ -80,7 +80,7 @@ def main(options):
                 dir_choice = path.expanduser("~/Desktop/Downloads/")
             else:
                 print("[!] Unknown input!")
-        input()
+                
         options["outtmpl"] = path.join(dir_choice, "%(title)s.%(ext)s")
 
         #Download confirmation  
