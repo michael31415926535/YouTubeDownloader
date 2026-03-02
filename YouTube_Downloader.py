@@ -1,5 +1,6 @@
 import yt_dlp as youtube_dl
-from os import path, makedirs
+from os import path, makedirs, name
+from subprocess import run
 
 download_mp3 = {
     'format': 'bestaudio/best',
@@ -7,7 +8,6 @@ download_mp3 = {
     'nocheckcertificate': True,
     'ignoreerrors': True,
     'continuedl': True,
-    'download_archive': 'archive.txt',
     'nooverwrites': True,
     'noprogress': False,
     'postprocessors': [{
@@ -22,7 +22,6 @@ download_mp4 = {
     'outtmpl': '%(title)s.%(ext)s',
     'ignoreerrors': True,
     'continuedl': True,
-    'download_archive': 'archive.txt',
     'nooverwrites': True,
     'noprogress': False,
 }
@@ -48,13 +47,32 @@ def download(link, download_options):
                 f.write(f"{link}\n")
 
 
-def main(options):
+def main():
+    while True:
+        print("\n -+= Developed By EternalBlue#8132 =+-")
+        print("[+] Type '1' to download YouTube Audio (MP3)")
+        print("[+] Type '2' to download YouTube Videos (MP4)")
+        p = str(input(" >> "))
+
+        if p == "1" or p.lower() in ["mp3", "audio"]:
+            main(download_mp3)
+        elif p == "2" or p.lower() in ["mp4", "video"]:
+            main(download_mp4)
+        elif p.lower()[:1] in ["e", "q"]:
+            exit()
+        else:
+            print("\n[!] Invalid choice! Type 'exit' or 'quit' to cancel.")
+
+
+def BeginDownload(options):
     urls = []
     num = None
-
+    
     while num is None:
         try:
             num = int(input("\n[?] How many videos are you going to download? >> "))
+        except KeyboardInterrupt:
+            return
         except:
             print("    [!] Please enter a valid number!\n")
 
@@ -89,6 +107,8 @@ def main(options):
                         makedirs(folderPath)
                         print(f"    [+] Created path '{folderPath}'")
                         dir_choice = folderPath
+                    except KeyboardInterrupt:
+                        return
                     except:
                         print("    [!] Failed to create path!")
                         dir_choice = None
@@ -104,11 +124,6 @@ def main(options):
 
     options["outtmpl"] = path.join(dir_choice, "%(title)s.%(ext)s")
 
-    answer = input("\n[?] Start the download? (Yes/No) >> ")
-    if answer.lower()[:1] == "n":
-        print("[!] Exiting Download")
-        return
-
     print("[+] Starting Download...")
     for link in urls:
         download(link, options)
@@ -119,17 +134,14 @@ def main(options):
 
 
 if __name__ == "__main__":
-    while True:
-        print("\n -+= Developed By EternalBlue#8132 =+-")
-        print("[+] Type '1' to download YouTube Audio (MP3)")
-        print("[+] Type '2' to download YouTube Videos (MP4)")
-        p = str(input(" >> "))
-
-        if p == "1" or p.lower() in ["mp3", "audio"]:
-            main(download_mp3)
-        elif p == "2" or p.lower() in ["mp4", "video"]:
-            main(download_mp4)
-        elif p.lower()[:1] in ["e", "q"]:
-            exit()
-        else:
-            print("\n[!] Invalid choice! Type 'exit' or 'quit' to cancel.")
+    print("[+] Checking for updates...")
+    
+    try:
+        pip_cmd = "pip" if name == "nt" else "pip3"
+        run([pip_cmd, "install", "yt-dlp", "--upgrade"], check=True)
+    except KeyboardInterrupt:
+        exit()
+    except:
+        print("[!] A failure occurred when checking for updates. Downloading may not work! Continuing anyway...")
+    
+    main()
